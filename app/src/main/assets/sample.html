@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>B</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        body {
+            background-color: #FAFAFA;
+            font-family: monospace;
+        }
+
+        #training {
+            width: 100%;
+            line-height: 50px;
+            font-size: 20px;
+            text-align: center;
+            background-color: #009688;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        #training-page {
+            display: none;
+        }
+
+        .section {
+            width: 100%;
+        }
+
+        .title {
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .value {
+            text-align: center;
+            font-size: 50px;
+            margin: auto;
+        }
+
+        .action-list {
+            flex: 1;
+            text-align: center;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #607D8B;
+        }
+
+        .button {
+            margin: 5px 0;
+            background-color: #4CAF50;
+            width: 70px;
+            height: 70px;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .button-2 {
+            background-color: #f44336;
+        }
+
+        .button-3 {
+            background-color: #2196F3;
+        }
+    </style>
+</head>
+
+<body>
+<script>
+        // Training button
+        function training() {
+            document.getElementById('training').style.display = 'none';
+            document.getElementById('weather').style.display = 'none';
+            document.getElementById('training-page').style.display = 'initial';
+        }
+    </script>
+<div id="training" onclick="training()">Session</div>
+
+<div id="weather">
+    <!-- Code generated: start -->
+    <a class="weatherwidget-io" href="https://forecast7.com/fr/48d862d35/paris/" data-label_1="PARIS" data-theme="original">PARIS</a>
+    <script>
+            !function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0]; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = 'https://weatherwidget.io/js/widget.min.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'weatherwidget-io-js');
+        </script>
+    <!-- Code generated: end -->
+</div>
+
+<script>
+        // Weather
+        if (navigator.onLine) {
+            document.getElementById('weather').style.display = 'initial';
+        }
+    </script>
+
+<div id="training-page">
+    <script>
+            // Chrono
+            let start = 0;
+            let end = 0;
+            let diff = 0;
+            let timerID = 0;
+            function chrono() {
+                end = new Date();
+                diff = new Date(end - start);
+                let hr = diff.getHours() - 1;
+                let min = diff.getMinutes();
+                let sec = diff.getSeconds();
+                document.getElementById('chrono-time').textContent = `${hr > 0 ? hr + ':' : ''}${min < 10 && hr > 0 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
+            }
+            function chronoStart() {
+                document.getElementById('start-stop').textContent = '||';
+                document.getElementById('start-stop').onclick = chronoStop;
+                start = new Date();
+                timerID = setInterval(chrono, 1000);
+            }
+            function chronoContinue() {
+                document.getElementById('start-stop').textContent = '||';
+                document.getElementById('start-stop').onclick = chronoStop;
+                start = new Date(new Date() - diff);
+                timerID = setInterval(chrono, 1000);
+            }
+            function chronoReset() {
+                document.getElementById('chrono-time').textContent = '0:00';
+                document.getElementById('start-stop').textContent = '>';
+                document.getElementById('start-stop').onclick = chronoStart;
+                clearInterval(timerID);
+            }
+            function chronoStop() {
+                document.getElementById('start-stop').textContent = '>';
+                document.getElementById('start-stop').onclick = chronoContinue;
+                clearInterval(timerID);
+            }
+        </script>
+    <div class="title">Chrono</div>
+    <div id="chrono" class="section">
+        <div id="chrono-time" class="value">0:00</div>
+        <div class="action-list">
+            <button id="start-stop" class="button" onclick="chronoStart()">></button>
+            <button class="button button-2" onclick="chronoReset()">x</button>
+        </div>
+    </div>
+
+    <script>
+            // Countdown
+            let countdownId;
+            function countdown(seconds) {
+                const now = Date.now();
+                const then = now + seconds * 1000;
+                displayCountdown(seconds);
+
+                clearInterval(countdownId);
+                countdownId = setInterval(() => {
+                    const secondsLeft = Math.round((then - Date.now()) / 1000);
+                    if (secondsLeft < 0) {
+                        document.getElementById('countdown-time').style.color = 'white';
+                        document.getElementById('countdown-time').style.backgroundColor = '#f44336';
+                        clearInterval(countdownId);
+                        return;
+                    }
+                    displayCountdown(secondsLeft);
+                }, 1000);
+            }
+
+            function displayCountdown(seconds) {
+                const min = Math.floor(seconds / 60);
+                const sec = seconds % 60;
+                document.getElementById('countdown-time').textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+                document.getElementById('countdown-time').style.color = 'black';
+                document.getElementById('countdown-time').style.backgroundColor = 'inherit';
+            }
+
+        </script>
+    <div class="title">Countdown</div>
+    <div id="countdown" class="section">
+        <div id="countdown-time" class="value">0:00</div>
+        <div class="action-list">
+            <button class="button button-3" onclick="countdown(25)">25</button>
+            <button class="button button-3" onclick="countdown(30)">30</button>
+            <button class="button button-3" onclick="countdown(90)">1:30</button>
+            <button class="button button-3" onclick="countdown(180)">3:00</button>
+        </div>
+    </div>
+
+    <script>
+            // Repetition
+            let repetition = 0;
+            function addRepetition() {
+                repetition++;
+                displayRepetition();
+            }
+
+            function resetRepetition() {
+                repetition = 0;
+                displayRepetition();
+            }
+
+            function displayRepetition() {
+                document.getElementById('repetition-value').textContent = repetition;
+            }
+        </script>
+    <div class="title">Repetition</div>
+    <div id="repetition" class="section">
+        <div id="repetition-value" class="value">0</div>
+        <div class="action-list">
+            <button class="button" onclick="addRepetition()">+</button>
+            <button class="button button-2" onclick="resetRepetition()">x</button>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
